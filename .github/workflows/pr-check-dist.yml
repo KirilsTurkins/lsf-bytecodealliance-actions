@@ -1,10 +1,10 @@
 name: Ensure dist package is up to date
 on:
   pull_request:
-    branches: [main]
+    branches: [main, development]
 
   push:
-    branches: [main]
+    branches: [main, development]
 
   workflow_dispatch: {}
 
@@ -18,10 +18,16 @@ jobs:
         with:
           node-version: "24"
 
-      - name: npm install
-        run: npm install
+      - name: npm ci
+        run: npm ci
 
       - name: npm run build
+        run: npm run build
+
+      - name: npm test
+        run: npm test -- --runInBand
+
+      - name: npm run package
         run: npm run package
         env:
           NODE_OPTIONS: --openssl-legacy-provider
